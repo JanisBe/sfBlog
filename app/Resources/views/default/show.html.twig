@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>{{ post.title }}</h1>
+
+<div>
+        <p>{{ post.lead }}</p>
+    <P>{{ post.content }}</P>
+    <span >Dodano: {{ post.createdAt|date('H:i d/m/Y') }}</span>
+<hr>
+    {% if app.user %}
+    <h3>Komentarze:</h3>
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+    <button class="btn btn-primary pull-right">Dodaj komentarz</button>
+    {{ form_end(form) }}
+    <div class='clearfix'></div>
+{% else %}
+    <div class="alert-warning">
+    <p>Mogą dodawać tylko zalogowani!</p>
+    <p><a href="{{ path('fos_user_security_login') }}" >|Zaloguj sie|</a></p>
+    </div>
+    {% endif %}
+    {% for comment in post.comments %}
+
+        <div class="col-xs-5 bg-gray">
+            <p> {{comment.content}}
+            </p>
+            <span >Dodany: {{ comment.createdAt|date('H:i d/m/Y') }}
+                {% if comment.user %}
+             przez {{ comment.user }}
+                {% endif %}
+            </span>
+            <br>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
